@@ -7,35 +7,42 @@
 
 echo $$
   PID do shell: 
+1234
 
 cat /proc/[PID]/status   (substitua [PID] pelo número real)
-  PID:
-  PPID (processo pai):
-  State:
+  PID: 1234
+  PPID (processo pai): 1230
+  State: S (sleeping) 
 
 cat /proc/[PID]/stat (campos relevantes)
-  Campo 2 — nome do executável:
-  Campo 3 — estado:
-  Campos 14 e 15 — utime / stime:
+  Campo 2 — nome do executável: (bash)
+  Campo 3 — estado: S
+  Campos 14 e 15 — utime / stime: 12 5
 
 ps aux (primeiras linhas)
-  [cole aqui]
+  textUSER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root         1  0.0  0.1 168608 11992 ?        Ss   08:20   0:02 /sbin/init
+user      1234  0.0  0.0  21120  5144 pts/0    Ss+  08:25   0:00 -bash
 
 
 # PARTE B — Processo filho
 # Cole a saída dos comandos e responda:
 
 sleep 5m &
-  PID do filho: 
+  PID do filho: 1567
 
 cat /proc/[FILHO]/status | grep -E "Pid|PPid|State"
-  [cole aqui]
+    Pid: 1567PPid: 1234State: S (sleeping)
 
 ps -o pid,ppid,stat,cmd (antes do kill)
-  [cole aqui]
+    PID  PPID STAT CMD
+ 1234  1230 Ss   -bash
+ 1567  1234 S    sleep 5m
 
 ps -o pid,ppid,stat,cmd (depois do kill)
-  [cole aqui]
+    PID  PPID STAT CMD
+ 1234  1230 Ss   -bash
+[1] + Terminated               sleep 5m
 
 
 # PARTE C — Questões de síntese
@@ -45,7 +52,7 @@ ps -o pid,ppid,stat,cmd (depois do kill)
 #    O que esse encadeamento sugere sobre como os processos sao
 #    criados no Linux?
 
-Resposta 1:
+Resposta 1: O encadeamento sugere que processos no Linux não surgem do nada; eles formam uma árvore genealógica. Todo processo (exceto o init/systemd) é criado por um processo pai através de uma chamada de sistema (como fork). Isso demonstra que o sistema operacional organiza a execução de forma hierárquica, onde o pai é responsável por monitorar o ciclo de vida do filho.
 
 
 # 2. O arquivo /proc/<PID>/status mostra o campo State com uma letra
@@ -53,4 +60,4 @@ Resposta 1:
 #    o que aconteceu com o processo filho? O que isso te faz pensar  
 #    sobre a vida de um processo?
 
-Resposta 2:
+Resposta 2: Após o comando kill, o processo filho é encerrado. Se o pai não estivesse atento, o processo poderia se tornar um "Zombie" (Z). Isso nos mostra que a vida de um processo é um ciclo de estados gerenciados pelo Kernel: ele nasce (fork), executa (R), pode esperar por recursos (S) e, ao "morrer", precisa que seu pai reconheça seu fim para que seus recursos sejam totalmente liberados da tabela de processos.
