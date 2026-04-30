@@ -8,27 +8,42 @@
 # strace echo "ola" 2>&1 | grep write
 
 Saída filtrada:
+# Atividade 3 — Modo usuário × modo kernel
+# Preencha este arquivo durante a atividade.
+# ─────────────────────────────────────────────────────
+
+# PARTE A — Observar syscalls com strace
+
+# Cole abaixo a linha relevante da saída de:
+# strace echo "ola" 2>&1 | grep write
+
+Saída filtrada:
+write(1, "ola\n", 4) = 4
 
 # Anote:
 #   Argumento 1 (file descriptor):
-#   O que está sendo escrito:
+#   O que está sendo escrito:conteúdo:
 #   Valor de retorno:
 
-fd:
-conteúdo:
-retorno:
+fd: 1 (stdout)
+conteúdo: "ola\n"
+retorno: 4
 
 
 # PARTE B — Programa C com write() direto
 
 # Cole aqui o código de syscall_direto.c que você escreveu:
+#include <unistd.h>
 
-[código-fonte]
+int main() {
+    write(1, "Ola direto\n", 11);
+    return 0;
+}
 
 
 # Cole aqui a linha write(...) da saída de strace ./syscall_direto:
 
-[saída do strace]
+write(1, "Ola direto\n", 11) = 11
 
 
 # PARTE C — Questões de síntese
@@ -37,11 +52,11 @@ retorno:
 #    Como um programa de usuário consegue fazer I/O sem executar
 #    instruções privilegiadas diretamente? (mínimo 2 frases)
 
-Resposta 1:
+Resposta 1: Um programa em modo usuário não executa diretamente instruções privilegiadas de I/O; em vez disso, ele faz chamadas de sistema (syscalls), como write(), que solicitam ao sistema operacional a execução da operação. O kernel, que roda em modo privilegiado, recebe essa solicitação e executa o acesso ao dispositivo de forma segura e controlada.
 
 
 # 2. Compare write(fd, buffer, tamanho) com o "programa de canal"
 #    da apresentação: o que os dois têm em comum em termos de
 #    responsabilidades?
 
-Resposta 2:
+Resposta 2: Tanto a chamada write(fd, buffer, tamanho) quanto o “programa de canal” descrevem uma operação de I/O de forma declarativa: ambos especificam o que deve ser feito (dados, destino e tamanho), mas não executam diretamente a transferência. A responsabilidade de realizar a operação de fato fica com um agente especializado (o kernel ou o controlador de I/O), que interpreta essa descrição e executa a ação.
