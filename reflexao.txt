@@ -1,4 +1,4 @@
-# Atividades 6 — Questão de síntese
+#Atividades 6 — Questão de síntese
 # Preencha este arquivo durante e após as atividades.
 # ─────────────────────────────────────────────────────
 
@@ -8,7 +8,7 @@
 # // ASSIGN SYS004,TAPE para associar um job a um dispositivo.
 # No shell moderno, qual mecanismo cumpre papel equivalente?
 
-Resposta:
+Resposta: São os Redirecionadores (os símbolos > e |). Antigamente você tinha que avisar o computador onde "plugar" a fita ou o disco. Hoje, o Shell faz isso conectando os programas: o > joga o resultado para um arquivo e o | (pipe) joga o resultado de um programa direto para dentro do outro.
 
 # ─────────────────────────────────────────────────────
 
@@ -19,11 +19,13 @@ Resposta:
 #    papel? Como o make sabe que não precisa recompilar um arquivo
 #    que não mudou?
 
-Resposta 1:
+Resposta 1: O Make usa o mecanismo de Dependências e olha para o Tempo (data e hora dos ficheiros).
+Ele é esperto: olha para o ficheiro de código e para o ficheiro pronto. Se o código não mudou desde a última vez, o Make sabe que não precisa de fazer nada e pula essa parte para poupar tempo.
 
 
 # 2. O monitor unificava "supervisor, carregador e rotinas de I/O
 #    sob uma interface textual". O que o Makefile unifica no fluxo
 #    de desenvolvimento moderno?
 
-Resposta 2:
+Resposta 2: O Makefile unifica a Receita do Programa.
+Em vez de estares a digitar 10 comandos diferentes para compilar, organizar e limpar ficheiros, o Makefile guarda todos esses passos num sítio só. Com apenas o comando make, o computador faz todo o trabalho sozinho, seguindo as instruções da "receita".
