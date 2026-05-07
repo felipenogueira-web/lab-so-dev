@@ -5,8 +5,8 @@
 # FASE 1 — Pré-processador (gcc -E)
 # Quantas linhas tem soma.i? O que o pré-processador expandiu?
 
-Linhas em soma.i:
-Observação:
+Linhas em soma.i: 757 soma.i
+Observação: O pré-processador expandiu principalmente o conteúdo da biblioteca, com definições, marcos, tipos e declarações usadas pela biblioteca stdio.h.
 
 
 # FASE 2 — Assembly (gcc -S)
@@ -14,38 +14,48 @@ Observação:
 # interessantes.
 
 Trecho de soma.s:
+        addi    sp,sp,-32
+        addw    a5,a4,a5
+        jr      ra
+        li      a1,5
+        li      a0,7
+        call    soma
+        call    printf
 
 # FASE 3 — Código objeto (gcc -c)
 # Cole a saída de: file soma.o
 
-file soma.o:
+file soma.o: soma.o: ELF 64-bit LSB relocatable, UCB RISC-V, version 1 (SYSV), not stripped
 
 # Cole a saída de: nm soma.o
 
 nm soma.o:
+0000000000000000 r .LC0
+0000000000000028 T main
+                 U printf
+0000000000000000 T soma
 
 # Quais símbolos aparecem? O que significa o marcador "U" ao lado
-# de printf?
+# de printf? Significa Undefined (Indefinido)
 
-Observação sobre nm:
+Observação sobre nm: O nm mostra que o arquivo está incompleto, pois as funções que eu criei estão lá (T), mas a função do sistema (printf) ainda está "vazia" (U).
 
 
 # FASE 4 — Ligação (gcc soma.o -o soma)
 # O que mudou após a ligação? Execute ./soma e registre a saída.
 
-Saída de ./soma:
+Saída de ./soma: 12
 
 
 # QUESTÕES DE SÍNTESE
 
 # 1. O montador histórico da genealogia resolvia rótulos (labels) em endereços de memória.
-# Na saída do nm soma.o, printf aparece marcado como U (Undefined). Qual é o papel do 
-# ligador em relação a esse símbolo? 
+# Na saída do nm soma.o, printf aparece marcado como U (Undefined). Qual é o papel do
+# ligador em relação a esse símbolo?
 
-Resposta 1:
-
+Resposta 1: O Ligador (Linker) funciona como um "cola-tudo". O printf está marcado como U (Indefinido) porque o seu código não está no teu ficheiro, mas sim guardado no sistema do computador. O papel do Ligador é procurar essa "peça" que falta e colá-la no teu programa para que ele consiga mostrar as coisas no ecrã.
 
 # 2. Você gerou três arquivos intermediários: soma.i (pré-processado), soma.s (assembly),
 #    soma.o (objeto). Qual desses é o que o computador realmente executa?
 
-Resposta 2:
+Resposta 2: O computador não executa nenhum desses três. Ele só consegue rodar o ficheiro final chamado soma (aquele que criaste na última fase). Os outros três (.i, .s, .o) são apenas "rascunhos" ou partes do caminho que o computador usa para construir o programa final.
